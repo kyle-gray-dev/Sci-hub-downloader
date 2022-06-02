@@ -44,6 +44,7 @@ for link in soup.select('li.app-section .c-list-group__item a'):
 
         # get doi
         doi = href.replace("https://link.springer.com/article/", "")
+        doi = doi.strip()
         print(doi, title)
 
         download_pdf(doi, output_folder, title)
