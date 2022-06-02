@@ -29,9 +29,12 @@ def download_pdf(doi, output_folder, title):
             pdf = 'https:/' + content
 
         r = requests.get(pdf, stream=True)
-        with open(output_folder + '/' + title.replace('/', '-').replace(':', ' ') + '.pdf', 'wb') as file:
-            file.write(r.content)
-
+        try:
+            with open(output_folder + '/' + title.replace('/', '-').replace(':', ' ').replace('?', '') + '.pdf', 'wb') as file:
+                file.write(r.content)
+        except Exception as ex1:
+            with open(output_folder + '/' + doi.replace('/', '-').replace(':', ' ').replace('?', '') + '.pdf', 'wb') as file:
+                file.write(r.content)
 
         return True
 
@@ -56,3 +59,6 @@ dois = doilist.readlines()
 #     download_pdf(doi, output_folder, doi)
 
 #     sleep(1)
+
+# download_pdf('10.1007/s10107-016-1028-0', output_folder, '<span class="InlineEquation" id="IEq1">\(L^{\infty }\)</span>')
+# download_pdf('10.1007/s10107-018-1285-1', output_folder, 'Quadratic optimization with orthogonality constraint: explicit Łojasiewicz exponent and linear convergence of retraction-based line-search and stochastic variance-reduced gradient methods')
