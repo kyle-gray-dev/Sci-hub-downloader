@@ -49,7 +49,5 @@ for link in soup.select('li.app-section .c-list-group__item a'):
 
         download_pdf(doi, output_folder, title)
 
-    break
-
 
     
