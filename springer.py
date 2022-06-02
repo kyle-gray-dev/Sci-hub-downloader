@@ -47,7 +47,17 @@ for link in soup.select('li.app-section .c-list-group__item a'):
         doi = doi.strip()
         print(doi, title)
 
-        download_pdf(doi, output_folder, title)
+        count = 0
+        while True:
+            if download_pdf(doi, output_folder, title):
+                break
+
+            count = count + 1
+            sleep(10)
+            if count > 5:
+                break
+
+        sleep(0.5)
 
 
     

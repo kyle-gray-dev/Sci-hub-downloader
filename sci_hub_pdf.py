@@ -25,8 +25,13 @@ def download_pdf(doi, output_folder, title):
         with open(output_folder + '/' + title.replace('/', '-').replace(':', ' ') + '.pdf', 'wb') as file:
             file.write(r.content)
 
+
+        return True
+
     except Exception as ex:
         print("Error", title, ex)
+
+    return False
 
 print("\n")
 print("Writing pdf files.....")
@@ -36,11 +41,11 @@ output_folder = current_dir + "/pdfs"
 if not os.path.exists(output_folder):
     os.mkdir(output_folder)
 
-doilist = open('dois.txt', 'r')
-dois = doilist.readlines()
+# doilist = open('dois.txt', 'r')
+# dois = doilist.readlines()
 
-for doi in dois:
-    doi = doi.strip()
-    download_pdf(doi, output_folder, doi)
+# for doi in dois:
+#     doi = doi.strip()
+#     download_pdf(doi, output_folder, doi)
 
-    sleep(1)
+#     sleep(1)
