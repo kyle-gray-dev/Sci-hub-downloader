@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import os
 from time import sleep
 
+# https://ieeexplore.ieee.org/search/searchresult.jsp?action=search&highlight=true&returnType=SEARCH&matchPubs=true&ranges=2020._2022_Year&returnFacets=ALL&rowsPerPage=100
+
 BASE_URL = "https://sci-hub.se/"
 
 def download_pdf(doi, output_folder, title):
