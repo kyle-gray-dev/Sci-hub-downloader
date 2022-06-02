@@ -11,6 +11,11 @@ def download_pdf(doi, output_folder, title):
         response = requests.get(BASE_URL + doi)
         
         soup = BeautifulSoup(response.content, 'html.parser')
+        smile = soup.select_one('#smile')
+        if smile is not None:
+            print("PDF not exist", doi, title)
+            return True
+
         content = soup.find('embed').get('src').replace('#navpanes=0&view=FitH', '').replace('//', '/')
         if content.startswith('/downloads'):
             pdf = BASE_URL + content
@@ -41,8 +46,8 @@ output_folder = current_dir + "/pdfs"
 if not os.path.exists(output_folder):
     os.mkdir(output_folder)
 
-# doilist = open('dois.txt', 'r')
-# dois = doilist.readlines()
+doilist = open('dois.txt', 'r')
+dois = doilist.readlines()
 
 # for doi in dois:
 #     doi = doi.strip()

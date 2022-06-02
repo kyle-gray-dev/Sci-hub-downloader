@@ -53,8 +53,8 @@ for link in soup.select('li.app-section .c-list-group__item a'):
                 break
 
             count = count + 1
-            sleep(10)
-            if count > 5:
+            sleep(30)
+            if count > 20:
                 break
 
         sleep(0.5)
