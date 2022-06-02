@@ -33,6 +33,7 @@ for doi in dois:
         else:
             pdf = 'https:/' + content
 
+        print(doi)
         r = requests.get(pdf, stream=True)
         with open(output_folder + '/' + doi.replace('/', '-') + '.pdf', 'wb') as file:
             file.write(r.content)
@@ -40,4 +41,4 @@ for doi in dois:
     except Exception as ex:
         print("Error", ex)
 
-    sleep(1)
+    sleep(0.05)
