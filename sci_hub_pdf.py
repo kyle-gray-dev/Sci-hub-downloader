@@ -40,7 +40,7 @@ def download_pdf(doi, output_folder, title):
             
             
             if len(r.content) < 3000: # captch                
-                toaster.show_toast(title, "Sci-Hub Capcha", threaded=True,
+                toaster.show_toast("Sci-Hub Capcha", title, threaded=True,
                    icon_path=None, duration=10)
 
                 print("Cannot solve captcha", len(r.content), title)
