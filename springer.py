@@ -6,7 +6,7 @@ from sci_hub_pdf import download_pdf
 
 
 JOURNAL_BASE_URL = 'https://link.springer.com'
-JOURNAL_URL = f"{JOURNAL_BASE_URL}/journal/10589/volumes-and-issues"
+JOURNAL_URL = f"{JOURNAL_BASE_URL}/journal/10878/volumes-and-issues"
 response = requests.get(JOURNAL_URL)
 soup = BeautifulSoup(response.content, 'html.parser')
 
@@ -18,7 +18,7 @@ if not os.path.exists(output_folder):
 # print(soup)
 for link in soup.select('li.app-section .c-list-group__item a'):
     href = link['href']
-    if "59" in href:
+    if "28" in href:
         break 
 
     href = JOURNAL_BASE_URL + href
