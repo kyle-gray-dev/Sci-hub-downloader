@@ -10,33 +10,49 @@ BASE_URL = "https://sci-hub.se/"
 def download_pdf(doi, output_folder, title):
     try:
         doi = doi.strip()
-        response = requests.get(BASE_URL + doi)
-        
-        soup = BeautifulSoup(response.content, 'html.parser')
-        smile = soup.select_one('#smile')
-        if smile is not None:
-            print("PDF not exist", doi, title)
+
+        count = 0
+
+        while True:
+            response = requests.get(BASE_URL + doi)
+            
+            soup = BeautifulSoup(response.content, 'html.parser')
+            smile = soup.select_one('#smile')
+            if smile is not None:
+                print("PDF not exist", doi, title)
+                return True
+
+            content = soup.find('embed').get('src').replace('#navpanes=0&view=FitH', '').replace('//', '/')
+            if content.startswith('/downloads'):
+                pdf = BASE_URL + content
+            elif content.startswith('/tree'):
+                pdf = BASE_URL + content
+            elif content.startswith('/uptodate'):
+                pdf = BASE_URL + content
+            else:
+                pdf = 'https:/' + content
+
+            r = requests.get(pdf, stream=True)
+            print("File Size", len(r.content))
+
+            if len(r.content) < 3000: # captch
+                count += 1
+                sleep(120)
+                continue
+
+            if count > 5:
+                print("Cannot solve captcha", title)
+                return True
+
+            try:
+                with open(output_folder + '/' + title.replace('/', '-').replace(':', ' ').replace('?', '') + '.pdf', 'wb') as file:
+                    file.write(r.content)
+
+            except Exception as ex1:
+                with open(output_folder + '/' + doi.replace('/', '-').replace(':', ' ').replace('?', '') + '.pdf', 'wb') as file:
+                    file.write(r.content)
+
             return True
-
-        content = soup.find('embed').get('src').replace('#navpanes=0&view=FitH', '').replace('//', '/')
-        if content.startswith('/downloads'):
-            pdf = BASE_URL + content
-        elif content.startswith('/tree'):
-            pdf = BASE_URL + content
-        elif content.startswith('/uptodate'):
-            pdf = BASE_URL + content
-        else:
-            pdf = 'https:/' + content
-
-        r = requests.get(pdf, stream=True)
-        try:
-            with open(output_folder + '/' + title.replace('/', '-').replace(':', ' ').replace('?', '') + '.pdf', 'wb') as file:
-                file.write(r.content)
-        except Exception as ex1:
-            with open(output_folder + '/' + doi.replace('/', '-').replace(':', ' ').replace('?', '') + '.pdf', 'wb') as file:
-                file.write(r.content)
-
-        return True
 
     except Exception as ex:
         print("Error", title, ex)
