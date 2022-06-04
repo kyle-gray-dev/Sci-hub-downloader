@@ -33,15 +33,15 @@ def download_pdf(doi, output_folder, title):
                 pdf = 'https:/' + content
 
             r = requests.get(pdf, stream=True)
-            print("File Size", len(r.content))
-
+            
             if len(r.content) < 3000: # captch
+                print("Cannot solve captcha", len(r.content), title)
+
                 count += 1
                 sleep(120)
                 continue
 
             if count > 5:
-                print("Cannot solve captcha", title)
                 return True
 
             try:
