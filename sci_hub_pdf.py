@@ -17,6 +17,9 @@ def download_pdf(doi, output_folder, title):
         count = 0
 
         while True:
+            if count > 10:
+                return True
+
             response = requests.get(BASE_URL + doi)
             
             soup = BeautifulSoup(response.content, 'html.parser')
@@ -37,7 +40,7 @@ def download_pdf(doi, output_folder, title):
 
             r = requests.get(pdf, stream=True)
 
-            
+
             
             if len(r.content) < 3000: # captch                
                 toaster.show_toast("Sci-Hub Capcha", title, threaded=True,
@@ -49,8 +52,7 @@ def download_pdf(doi, output_folder, title):
                 sleep(120)
                 continue
 
-            if count > 5:
-                return True
+
 
             try:
                 with open(output_folder + '/' + title.replace('/', '-').replace(':', ' ').replace('?', '') + '.pdf', 'wb') as file:
