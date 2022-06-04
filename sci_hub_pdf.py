@@ -2,6 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import os
 from time import sleep
+from win10toast import ToastNotifier
+
+toaster = ToastNotifier()
 
 # https://ieeexplore.ieee.org/search/searchresult.jsp?action=search&highlight=true&returnType=SEARCH&matchPubs=true&ranges=2020._2022_Year&returnFacets=ALL&rowsPerPage=100
 
@@ -33,8 +36,13 @@ def download_pdf(doi, output_folder, title):
                 pdf = 'https:/' + content
 
             r = requests.get(pdf, stream=True)
+
             
-            if len(r.content) < 3000: # captch
+            
+            if len(r.content) < 3000: # captch                
+                toaster.show_toast(title, "Sci-Hub Capcha", threaded=True,
+                   icon_path=None, duration=10)
+
                 print("Cannot solve captcha", len(r.content), title)
 
                 count += 1
