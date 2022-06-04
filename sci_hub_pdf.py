@@ -12,6 +12,16 @@ BASE_URL = "https://sci-hub.se/"
 
 def download_pdf(doi, output_folder, title):
     try:
+
+        # check file path
+        filepath = output_folder + '/' + title.replace('/', '-').replace(':', ' ').replace('?', '') + '.pdf'
+
+        if os.path.exists(filepath):        
+            filesize = os.path.getsize(filepath)
+            if filesize > 3000:
+                print("File Exists Skipped", filepath)
+                return True
+
         doi = doi.strip()
 
         count = 0
@@ -39,8 +49,6 @@ def download_pdf(doi, output_folder, title):
                 pdf = 'https:/' + content
 
             r = requests.get(pdf, stream=True)
-
-
             
             if len(r.content) < 3000: # captch                
                 toaster.show_toast("Sci-Hub Capcha", title, threaded=True,
@@ -55,7 +63,7 @@ def download_pdf(doi, output_folder, title):
 
 
             try:
-                with open(output_folder + '/' + title.replace('/', '-').replace(':', ' ').replace('?', '') + '.pdf', 'wb') as file:
+                with open(filepath, 'wb') as file:
                     file.write(r.content)
 
             except Exception as ex1:
