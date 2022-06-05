@@ -10,12 +10,11 @@ JOURNAL_URL = f"{JOURNAL_BASE_URL}/journal/10589/volumes-and-issues"
 response = requests.get(JOURNAL_URL)
 soup = BeautifulSoup(response.content, 'html.parser')
 
-# current_dir = os.getcwd()
 journal_name = 'Computational Optimization and Applications'
+# current_dir = os.getcwd()
 
-# output_folder = current_dir + "/" + journal_name
-current_dir = 'E://Book/Journals/'
-output_folder = current_dir + journal_name
+current_dir = 'E://Book/Journals'
+output_folder = current_dir + "/" + journal_name
 
 if not os.path.exists(output_folder):
     os.mkdir(output_folder)
@@ -45,7 +44,7 @@ for link in soup.select('li.app-section .c-list-group__item a'):
 
     for link in soup.select('h3.c-card__title a'):
         href = link['href']
-        title = str(link.contents[0])
+        title = link.contents[0]
 
         # get doi
         doi = href.replace("https://link.springer.com/article/", "")

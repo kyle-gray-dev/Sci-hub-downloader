@@ -23,8 +23,12 @@ contents = '''
 print("Parse is Ended")
 soup = BeautifulSoup(contents, 'html.parser')
 
-current_dir = os.getcwd()
-output_folder = current_dir + "/pdfs"
+journal_name = 'Computational Optimization and Applications'
+# current_dir = os.getcwd()
+
+current_dir = 'E://Book/Journals'
+output_folder = current_dir + "/" + journal_name
+
 if not os.path.exists(output_folder):
     os.mkdir(output_folder)
 
@@ -46,7 +50,8 @@ for link in soup.select('ul > li > a'):
         href = link['href']
         title = link.contents[0]
 
-        output_folder = current_dir + "/pdfs/" + title
+        output_folder = current_dir + "/" + journal_name  + "/" + title
+
         output_folder = output_folder.strip()
         if not os.path.exists(output_folder):
             os.mkdir(output_folder)
@@ -65,7 +70,7 @@ for link in soup.select('ul > li > a'):
         for link in soup.select(".issue-item__title"):
             href  = link["href"]
             title = link.select_one('h2').contents[0]
-
+            
             # get doi
             doi = href.replace("/doi/", "")
 

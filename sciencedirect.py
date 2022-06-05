@@ -22,13 +22,14 @@ contents = '''
 print("Parse is Ended")
 soup = BeautifulSoup(contents, 'html.parser')
 
-current_dir = os.getcwd()
-output_folder = current_dir + "/pdfs"
+journal_name = 'Computational Optimization and Applications'
+# current_dir = os.getcwd()
+
+current_dir = 'E://Book/Journals'
+output_folder = current_dir + "/" + journal_name
+
 if not os.path.exists(output_folder):
     os.mkdir(output_folder)
-
-if 'js-issue-item-link' in contents:
-    print("exists")
 
 for link in soup.select('a.js-issue-item-link'):
     href = link['href']
@@ -47,8 +48,8 @@ for link in soup.select('a.js-issue-item-link'):
     title = soup.select_one('.js-vol-issue').contents[0]
     print(title)
 
+    output_folder = current_dir + "/" + journal_name  + "/" + title
 
-    output_folder = current_dir + "/pdfs/" + title
     output_folder = output_folder.strip()
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)

@@ -11,6 +11,9 @@ toaster = ToastNotifier()
 BASE_URL = "https://sci-hub.se/"
 
 def download_pdf(doi, output_folder, title):
+    title = str(title)
+    doi = str(doi)
+    
     try:
         if '<' in title and '>' in title:
             title = doi
