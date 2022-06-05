@@ -53,7 +53,7 @@ def download_pdf(doi, output_folder, title):
 
             r = requests.get(pdf, stream=True)
 
-            if len(r.content) > 250:
+            if len(r.content) < 250:
                 print("Cannot find file", len(r.content), title)
 
                 return True
