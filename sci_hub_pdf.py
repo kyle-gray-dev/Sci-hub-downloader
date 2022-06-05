@@ -12,6 +12,9 @@ BASE_URL = "https://sci-hub.se/"
 
 def download_pdf(doi, output_folder, title):
     try:
+        if '<' in title and '>' in title:
+            title = doi
+        # title = '<span class="smallCaps">M</span>'
 
         # check file path
         filepath = output_folder + '/' + title.replace('/', '-').replace(':', ' ').replace('?', '') + '.pdf'
@@ -27,7 +30,7 @@ def download_pdf(doi, output_folder, title):
         count = 0
 
         while True:
-            if count > 10:
+            if count > 200:
                 return True
 
             response = requests.get(BASE_URL + doi)
@@ -49,6 +52,11 @@ def download_pdf(doi, output_folder, title):
                 pdf = 'https:/' + content
 
             r = requests.get(pdf, stream=True)
+
+            if len(r.content) > 250:
+                print("Cannot find file", len(r.content), title)
+
+                return True
             
             if len(r.content) < 3000: # captch                
                 toaster.show_toast("Sci-Hub Capcha", title, threaded=True,
