@@ -1360,7 +1360,11 @@ for link in soup.select('.issue-link'):
 
     for link in soup.select('.art_title a'):
         href = link['href']
-        title  = link.select_one("span.hlFld-Title").contents[0]
+        span_ele = link.select_one("span.hlFld-Title")
+        if span_ele is None:
+            continue
+        
+        title = span_ele.contents[0]
 
         # get doi
         doi = href.replace("/doi/full/", "")
