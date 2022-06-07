@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import os
 from time import sleep
 from win10toast import ToastNotifier
+import urllib.request as urllib2
 
 toaster = ToastNotifier()
 
@@ -10,7 +11,7 @@ toaster = ToastNotifier()
 
 BASE_URL = "https://sci-hub.se/"
 
-def download_pdf(doi, output_folder, title):
+def download_pdf(doi, output_folder, title, driver=None):
     title = str(title)
     doi = str(doi)
     
@@ -36,13 +37,24 @@ def download_pdf(doi, output_folder, title):
             if count > 200:
                 return True
 
-            response = requests.get(BASE_URL + doi)
+            contents = ""
+            if driver is not None:
+                driver.get(BASE_URL + doi)
+                contents = driver.page_source
+            else:
+                response = requests.get(BASE_URL + doi)
+                contents = response.content
             
-            soup = BeautifulSoup(response.content, 'html.parser')
+            soup = BeautifulSoup(contents, 'html.parser')
             smile = soup.select_one('#smile')
             if smile is not None:
                 print("PDF not exist", doi, title)
                 return True
+
+            # loading_ani = soup.select_one('#link-ddg')
+            # if loading_ani is not None:
+            #     print("PDF not exist", doi, title)
+            #     return True
 
             content = soup.find('embed').get('src').replace('#navpanes=0&view=FitH', '').replace('//', '/')
             if content.startswith('/downloads'):
@@ -55,7 +67,7 @@ def download_pdf(doi, output_folder, title):
                 pdf = 'https:/' + content
 
             r = requests.get(pdf, stream=True)
-
+            
             if len(r.content) < 250:
                 print("Cannot find file", len(r.content), title)
 
@@ -70,8 +82,6 @@ def download_pdf(doi, output_folder, title):
                 count += 1
                 sleep(120)
                 continue
-
-
 
             try:
                 with open(filepath, 'wb') as file:

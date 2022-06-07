@@ -1,16 +1,20 @@
 import requests
 from bs4 import BeautifulSoup
+from selenium import webdriver
+
 import os
 from time import sleep
 from sci_hub_pdf import download_pdf
 
 
 JOURNAL_BASE_URL = 'https://link.springer.com'
-JOURNAL_URL = f"{JOURNAL_BASE_URL}/journal/10589/volumes-and-issues"
+JOURNAL_URL = f"{JOURNAL_BASE_URL}/journal/10288/volumes-and-issues"
 response = requests.get(JOURNAL_URL)
+
+driver = webdriver.Chrome('./chromedriver.exe')
 soup = BeautifulSoup(response.content, 'html.parser')
 
-journal_name = 'Computational Optimization and Applications'
+journal_name = '4OR'
 # current_dir = os.getcwd()
 
 current_dir = 'E://Book/Journals'
@@ -53,12 +57,12 @@ for link in soup.select('li.app-section .c-list-group__item a'):
 
         count = 0
         while True:
-            if download_pdf(doi, output_folder, title):
+            if download_pdf(doi, output_folder, title, driver):
                 break
 
             count = count + 1
             sleep(30)
-            if count > 20:
+            if count > 5:
                 break
 
         sleep(0.5)

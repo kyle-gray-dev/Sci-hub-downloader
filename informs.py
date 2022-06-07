@@ -23,6 +23,7 @@ journal_name = 'Mathematics of Operations Research'
 # current_dir = os.getcwd()
 
 current_dir = 'E://Book/Journals'
+current_dir = './pdfs'
 output_folder = current_dir + "/" + journal_name
 
 if not os.path.exists(output_folder):
