@@ -7,10 +7,15 @@ M = imaplib.IMAP4_SSL('imap-mail.outlook.com', 993)
 M.login(email_user, email_pass)
 M.select()
 
+days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
 typ, data = M.search(None, '(FROM "noreply@codementor.io")')
 # typ, data = M.search(None, 'All')
 
-hist = [0] * 24
+hours_hist = [0] * 24
+days_hist = [0] * 7
+months_hist = [0] * 12
 
 total = len(data[0].split())
 for num in data[0].split():
@@ -35,18 +40,36 @@ for num in data[0].split():
     if "noreply@codementor.io" not in date:
         continue
 
+    print(f"------{num}/{total}-------\n")
+    print(date)
+            
+
     st = len(" Mon, 07 Feb 2022 ")
     ed = len(" Mon, 07 Feb 2022 18")
     h = int(date[st:ed])
 
-    # print(subject)
-    print(f"------{num}/{total}-------\n")
-    print(date)
-    hist[h] += 1
+    day = date[1:4]
 
-    print("Hours", str(h))
+    st1 = len(" Mon, 07 ")
+    ed1 = len(" Mon, 07 Feb")
+    month = date[st1:ed1]
+
+    day_index = days.index(day)
+    if day_index >= 0:
+        days_hist[day_index] += 1
+
+    month_index = months.index(month)
+    if month_index >= 0:
+        months_hist[month_index] += 1
+
+    # print(subject)    
+    hours_hist[h] += 1
+
+    print("Date:        ", month, day, h)
     print("")
-    print("Hist", hist)
+    print("Hours Hist", hours_hist)
+    print("Days Hist", days_hist)
+    print("Months Hist", months_hist)
     print("\n")
 
 
