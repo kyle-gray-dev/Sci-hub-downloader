@@ -1,13 +1,14 @@
 import imaplib
 import base64
-email_user = "yuetongyang@outlook.com"
+email_user = "aaronwq32@outlook.com"
 email_pass = "wjdwlsdn123"
 
 M = imaplib.IMAP4_SSL('imap-mail.outlook.com', 993)
 M.login(email_user, email_pass)
 M.select()
 
-typ, data = M.search(None, 'ALL')
+typ, data = M.search(None, '(FROM "noreply@codementor.io")')
+# typ, data = M.search(None, 'All')
 
 hist = [0] * 24
 
@@ -31,7 +32,7 @@ for num in data[0].split():
     # subject = content[pos1:pos2]
     date = content[pos3:pos4]
 
-    if "notifications@codementor.io" not in date:
+    if "noreply@codementor.io" not in date:
         continue
 
     st = len(" Mon, 07 Feb 2022 ")
