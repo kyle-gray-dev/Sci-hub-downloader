@@ -25,25 +25,29 @@ for root, dirs, files in os.walk(".", topdown=False):
         count = len(data['hits'])
         result = []
         for x in data['hits']:
-            # time.sleep(10)
-            # # get codementor
-            # url = "https://www.codementor.io/@" + x["username"]
-            # response = requests.get(url)
+            time.sleep(1)
+            # get codementor
+            url = "https://www.codementor.io/@" + x["username"]
+            response = requests.get(url)
 
-            # soup = BeautifulSoup(response.content, 'html.parser')
+            soup = BeautifulSoup(response.content, 'html.parser')
 
-            # link = soup.select_one('.linkedin-url')
-            # if link is None:
-            #     print(f"{i + 1}/{count}", x["username"], "There is no linkedin")  
-            #     i += 1
-            #     continue  
+            link = soup.select_one('.linkedin-url')
+            if link is None:
+                print(f"{i + 1}/{count}", x["username"], "There is no linkedin")  
+                i += 1
+                continue  
 
-            # href = link["href"]
-            # print(f"{i + 1}/{count}", x["username"], href)
-            # x["linkedin"] = href
+            href = link["href"]
+            print(f"{i + 1}/{count}", x["username"], href)
+            x["linkedin"] = href
 
             result.append(x)
             # break
+
+            if i % 100 == 0:
+                df = pd.DataFrame.from_dict(result)
+                df.to_excel(f"{items[0]}.xlsx")
 
             i += 1
 
