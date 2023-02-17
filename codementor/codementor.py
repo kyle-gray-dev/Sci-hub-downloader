@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import time
 
-f = open('account01.txt')
+f = open('account02-2022-07-01-08-01.txt')
   
 # returns JSON object as 
 # a dictionary
@@ -40,7 +40,7 @@ for x in data['hits']:
 
 
 df = pd.DataFrame.from_dict(result)
-df.to_excel("accounts1.xlsx")
+df.to_excel("account02-2022-07-01-08-01.xlsx")
 
     
   
