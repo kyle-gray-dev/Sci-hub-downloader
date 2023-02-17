@@ -1,48 +1,56 @@
+import os
 import json
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 import time
 
-f = open('account02-2022-07-01-08-01.txt')
-  
-# returns JSON object as 
-# a dictionary
-data = json.load(f)
-  
-# Iterating through the json
-# list
-i = 0
-count = len(data['hits'])
-result = []
-for x in data['hits']:
-    # time.sleep(10)
-    # # get codementor
-    # url = "https://www.codementor.io/@" + x["username"]
-    # response = requests.get(url)
+for root, dirs, files in os.walk(".", topdown=False):
+    for name in files:
+        items = os.path.splitext(name)
+        if items[1] != ".txt" or len(name) != len("account02-2018-04-01-07-01.txt"):
+            continue;
 
-    # soup = BeautifulSoup(response.content, 'html.parser')
+        print(name)
 
-    # link = soup.select_one('.linkedin-url')
-    # if link is None:
-    #     print(f"{i + 1}/{count}", x["username"], "There is no linkedin")  
-    #     i += 1
-    #     continue  
+        f = open(name)
+        
+        # returns JSON object as 
+        # a dictionary
+        data = json.load(f)
+        
+        # Iterating through the json
+        # list
+        i = 0
+        count = len(data['hits'])
+        result = []
+        for x in data['hits']:
+            # time.sleep(10)
+            # # get codementor
+            # url = "https://www.codementor.io/@" + x["username"]
+            # response = requests.get(url)
 
-    # href = link["href"]
-    # print(f"{i + 1}/{count}", x["username"], href)
-    # x["linkedin"] = href
+            # soup = BeautifulSoup(response.content, 'html.parser')
 
-    result.append(x)
-    # break
+            # link = soup.select_one('.linkedin-url')
+            # if link is None:
+            #     print(f"{i + 1}/{count}", x["username"], "There is no linkedin")  
+            #     i += 1
+            #     continue  
 
-    i += 1
+            # href = link["href"]
+            # print(f"{i + 1}/{count}", x["username"], href)
+            # x["linkedin"] = href
+
+            result.append(x)
+            # break
+
+            i += 1
 
 
-df = pd.DataFrame.from_dict(result)
-df.to_excel("account02-2022-07-01-08-01.xlsx")
-
-    
-  
-# Closing file
-f.close()
+        df = pd.DataFrame.from_dict(result)
+        df.to_excel(f"{items[0]}.xlsx")
+            
+        
+        # Closing file
+        f.close()
