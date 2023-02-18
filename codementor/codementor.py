@@ -9,7 +9,7 @@ for root, dirs, files in os.walk(".", topdown=False):
     for name in files:
         items = os.path.splitext(name)
         if items[1] != ".txt" or len(name) != len("account02-2018-04-01-07-01.txt"):
-            continue;
+            continue
 
         print(name)
 
