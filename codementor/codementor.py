@@ -39,6 +39,12 @@ for root, dirs, files in os.walk(".", topdown=False):
                     i += 1
                     continue  
 
+                link_badge = soup.select_one('.level-badges')
+                if link_badge is None:
+                    print(f"{i + 1}/{count}", x["username"], "This is not mentor")  
+                    i += 1
+                    continue  
+
                 href = link["href"]
                 print(f"{i + 1}/{count}", x["username"], href)
                 x["linkedin"] = href
